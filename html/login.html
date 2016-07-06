@@ -7,34 +7,74 @@
         <link rel="stylesheet" href="../css/login.css">
         <link rel="stylesheet" type="text/css" href="../css/global.css">
         <link rel="stylesheet" type="text/css" href="../css/home.css">
-
       <meta name="google-signin-scope" content="profile email">
-      <meta name="google-signin-client_id" content="123561453873-clvhdr7lo3tgjmtn1lo2gv7vgn59vcd3.apps.googleusercontent.com">
-      <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+      <meta name="google-signin-client_id" content="123561453873-4oqadbj99prflgk9riphkkk1ei55vjn1.apps.googleusercontent.com">
+
+      <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+      <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyCvPiBuLOJz4HMKQTi7X6Yr0ioIxNJZZxQ",
+            authDomain: "smarterplogintwo.firebaseapp.com",
+            databaseURL: "https://smarterplogintwo.firebaseio.com",
+            storageBucket: "",
+          };
+          firebase.initializeApp(config);
+      </script>
 
   </head>
 
   <body>
       <div id="my-signin2"></div>
+
+<!-- Custom google button -->
       <script>
-        function onSuccess(googleUser) {
-          console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-        }
-        function onFailure(error) {
-          console.log(error);
-        }
-        function renderButton() {
-          gapi.signin2.render('my-signin2', {
-            'scope': 'profile email',
-            'width': 240,
-            'height': 50,
-            'longtitle': true,
-            'theme': 'dark',
-            'onsuccess': onSuccess,
-            'onfailure': onFailure
-          });
-        }
-      </script>
-      <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+      function onSuccess(googleUser) {
+        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+      }
+      function onFailure(error) {
+        console.log(error);
+      }
+      function renderButton() {
+        gapi.signin2.render('my-signin2', {
+          'scope': 'profile email',
+          'width': 240,
+          'height': 50,
+          'longtitle': true,
+          'theme': 'dark',
+          'onsuccess': onSuccess,
+          'onfailure': onFailure
+        });
+      }
+    </script>
+    <!-- renders button -->
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+    <script>
+    var provider = new firebase.auth.GoogleAuthProvider();
+          firebase.auth().signInWithPopup(provider).then(function(result) {
+              // This gives you a Google Access Token. You can use it to access the Google API.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+                // ...
+              }).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+              });
+
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+        }, function(error) {
+          // An error happened.
+        });
+  </script>
+
   </body>
 </html>
